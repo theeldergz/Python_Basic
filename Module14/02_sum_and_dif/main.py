@@ -7,6 +7,7 @@ def count_sum(nums):
     print(f"\nСумма чисел: {summ}")
     return(summ)
 
+
 def count_sym(nums):
     count = 0
     while nums > 0:
@@ -14,6 +15,7 @@ def count_sym(nums):
         nums //= 10
     print(f"\nКоличество цифр в числе: {count}")
     return(count)
+
 
 x_num = int(input("\nВведите число: "))
 

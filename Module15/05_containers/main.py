@@ -25,3 +25,4 @@ for mass_container in all_containers:
     new_all_containers.append(mass_container)
 
 print(f"Номер, который получит новый контейнер: {final_count + 1}", "\nРасположение контейнеров:", new_all_containers)
+print(id(new_all_containers))

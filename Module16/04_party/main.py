@@ -20,5 +20,8 @@ while True:
             print(f"Привет, {guest_name.capitalize()}!")
 
     elif user_answer.lower() == "ушел":
-        guests.remove(guest_name.capitalize())
-        print(f"Пока, {guest_name.capitalize()}")
+        if guest_name in guests:
+            guests.remove(guest_name.capitalize())
+            print(f"Пока, {guest_name.capitalize()}")
+        else:
+            print("Такого гостя нет в списке")

@@ -2,8 +2,10 @@ text = input("Введите текст: ")
 sym_dict = {}
 
 for sym in text:
-    sym_dict[sym] = sym_dict.get(sym, 0) + 1
-
+    if sym in sym_dict:
+        sym_dict[sym] += 1
+    else:
+        sym_dict[sym] = 1
 
 keys = sym_dict.keys()
 

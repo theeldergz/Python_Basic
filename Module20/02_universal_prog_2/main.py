@@ -1,20 +1,21 @@
-def is_prime(iterator):
-    lenght_crypto = len(iterator)
-    prime_list = []
-    for number in range(lenght_crypto):
-        if number > 1:
-            for i in range(2, number):
-                if (number % i) == 0:
-                    break
-            else:
-                prime_list.append(number)
+def is_prime(num):
+    if num > 1:
+        for i in range(2, num):
+            if (num % i) == 0:
+                return False
+        else:
+            return True
 
-    crypto_list = [value for index, value in enumerate(iterator) if index in prime_list]
 
+#
+def crypto(iterator):
+    crypto_list = []
+    for index, value in enumerate(iterator):
+        if is_prime(index):
+            crypto_list.append(value)
     return crypto_list
 
-
-def crypto(iterator):
-    return is_prime(iterator)
+print(crypto([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
+print(crypto('О Дивный Новый мир!'))
 
 

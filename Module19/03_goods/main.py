@@ -24,23 +24,4 @@ store = {
     ],
 }
 
-
-stock = [key for key in goods.keys()]
-index_stock = 0
-amount = 0
-furn_count = 0
-
-
-for furniture_id in goods.values():
-    for item_id in store.keys():
-        amount = 0
-        furn_count = 0
-        for count in range(len(store[item_id])):
-            amount += store[item_id][count]['quantity'] * store[item_id][count]['price']
-            furn_count += store[item_id][count]['quantity']
-        if furniture_id == item_id:
-            print("{name_furn} - {count} штук, стоимость {amount} рубля".format(
-                name_furn=stock[index_stock],
-                count=furn_count,
-                amount=amount))
-            index_stock += 1
+# TODO здесь писать код

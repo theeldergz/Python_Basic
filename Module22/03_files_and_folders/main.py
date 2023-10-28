@@ -18,9 +18,11 @@ def dir_info(user_path):
 
         if os.path.isdir(path_to_file):
             count_directories += 1
-            size_files += dir_info(path_to_file)[0]
-            count_files += dir_info(path_to_file)[1]
-            count_directories += dir_info(path_to_file)[2]
+            summary_info = dir_info(path_to_file)
+
+            size_files += summary_info[0]
+            count_files += summary_info[1]
+            count_directories += summary_info[2]
         else:
             if os.path.isfile(path_to_file):
                 size_files += os.path.getsize(path_to_file)
@@ -32,7 +34,7 @@ def dir_info(user_path):
 size, file_count, dir_count = dir_info(user_path)
 
 print(
-    'Размер каталога (в Кб): ', round((size / 1024), 2), 'МБ',
+    'Размер каталога (в Кб): ', round((size / 1024), 2), 'КБ',
     '\nКоличество подкаталогов: ', dir_count,
     '\nКоличество файлов: ', file_count
 )

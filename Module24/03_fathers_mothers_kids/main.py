@@ -62,11 +62,6 @@ class Child:
         self.food_status_info()
 
 
-# denis = Parent('Denis', 35)
-# elis = Child('Elis', 11, denis)
-# elis.print_status()
-
-
 def create():
     child_list = []
 

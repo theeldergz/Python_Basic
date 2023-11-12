@@ -9,7 +9,7 @@ class Human:
 
     def eat(self, house):
         self.satiety += 10
-        house.food -= 10
+        self.house.food -= 10
 
     def work(self, house):
         roll_money = random.randint(5, 20)

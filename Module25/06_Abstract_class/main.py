@@ -1,5 +1,43 @@
-# TODO здесь писать код
+from abc import ABC, abstractmethod
+import math
 
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        __area = math.pi * (self.radius ** 2)
+        __area = round(__area, 2)
+        return __area
+
+
+class Rectangle(Shape):
+    def __init__(self, side_a, side_b):
+        self.side_a = side_a
+        self.side_b = side_b
+
+    def area(self):
+        __area = self.side_a * self.side_b
+        __area = round(__area, 2)
+        return __area
+
+
+class Triangle(Shape):
+    def __init__(self, side_a, side_b):
+        self.side_a = side_a
+        self.side_b = side_b
+
+    def area(self):
+        __area = 0.5 * self.side_a * self.side_b
+        __area = round(__area, 2)
+        return __area
 
 
 # Примеры работы с классом:

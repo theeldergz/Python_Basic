@@ -65,6 +65,35 @@ class Hero:
 
 
 class Healer(Hero):
+    def __init__(self, name):
+        super().__init__(name)
+        self.__magic_power = super().get_power() * 3
+
+    def is_alive(self):
+        return super().is_alive()
+
+    def attack(self, target):
+        target.take_damage(self.get_power() // 2)
+
+    def take_damage(self, damage):
+        self.set_hp(self.get_hp() - (damage * 1.2))
+        super().take_damage(damage * 1.2)
+
+    def heal(self, target):
+        target.set_hp(target.get_hp() + self.__magic_power)
+        print(f'Я хиллер {self.name} лечу союзника(ов) на {target.get_hp() + self.__magic_power}')
+
+    def make_a_move(self, friends, enemies):
+        for hero in friends:
+            if hero.get_hp() <= 150:
+                self.heal(hero)
+
+        super().make_a_move(friends, enemies)
+
+    def __str__(self):
+        info = str(f'Я {self.name}, живой: {self.is_alive()}, мое кол-во xp: {super().get_hp()}')
+        return info
+
     # Целитель:
     # Атрибуты:
     # - магическая сила - равна значению НАЧАЛЬНОГО показателя силы умноженному на 3 (self.__power * 3)
@@ -77,6 +106,44 @@ class Healer(Hero):
 
 
 class Tank(Hero):
+    def __init__(self, name):
+        super().__init__(name)
+        self.__guard = True
+        self.__defence = 1
+
+    def is_alive(self):
+        return super().is_alive()
+
+    def attack(self, target):
+        target.take_damage(self.get_power() // 2)
+
+    def take_damage(self, damage):
+        self.set_hp(self.get_hp() - (damage // self.__defence))
+        super().take_damage(damage // self.__defence)
+
+
+    def shield_up(self):
+        if not self.__guard:
+            print('Поднять щиты!!!')
+            self.__defence *= 2
+            self.set_power(self.get_power() // 2)
+
+    def shield_down(self):
+        if self.__guard:
+            print('Опускаем щиты!!!')
+            self.__defence /= 2
+            self.set_power(self.get_power() * 2)
+
+    def make_a_move(self, friends, enemies):
+        if self.get_hp() <= 350:
+            self.shield_up()
+        else:
+            self.shield_down()
+        super().make_a_move(friends, enemies)
+
+    def __str__(self):
+        info = str(f'Я {self.name}, живой: {self.is_alive()}, мое кол-во xp: {super().get_hp()}')
+        return info
     # Танк:
     # Атрибуты:
     # - показатель защиты - изначально равен 1, может увеличиваться и уменьшаться
@@ -91,6 +158,36 @@ class Tank(Hero):
 
 
 class Attacker(Hero):
+    def __init__(self, name):
+        super().__init__(name)
+        self.__power_multiply = 1
+
+    def is_alive(self):
+        return super().is_alive()
+
+    def attack(self, target):
+        target.take_damage(self.get_power() * self.__power_multiply)
+
+    def take_damage(self, damage):
+        self.set_hp(self.get_hp() - (self.__power_multiply // 2))
+        super().take_damage(damage)
+
+    def power_down(self):
+        self.__power_multiply //= 2
+
+    def power_up(self):
+        self.__power_multiply *= 2
+
+    def make_a_move(self, friends, enemies):
+        self.attack(enemies[0])
+        print(f"Я Убийца {self.name} Атакую того, кто стоит ближе -", enemies[0].name,
+              f"наношу урон равный: {self.get_power()}")
+        super().make_a_move(friends, enemies)
+
+    def __str__(self):
+        info = str(f'Я {self.name}, живой: {self.is_alive()}, мое кол-во xp: {super().get_hp()}')
+        return info
+
     # Убийца:
     # Атрибуты:
     # - коэффициент усиления урона (входящего и исходящего)

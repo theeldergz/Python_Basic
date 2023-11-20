@@ -7,32 +7,32 @@ class Human:
         self.house = house
         self.satiety = satiety
 
-    def eat(self, house):
+    def eat(self):
         self.satiety += 10
-        house.food -= 10
+        self.house.food -= 10
 
-    def work(self, house):
+    def work(self):
         roll_money = random.randint(5, 20)
-        house.money += roll_money
-        house.all_money += roll_money
+        self.house.money += roll_money
+        self.house.all_money += roll_money
         self.satiety -= 10
 
-    def play(self, house):
+    def play(self):
         self.satiety -= 10
-        house.count_play_games += 1
+        self.house.count_play_games += 1
 
-    def market(self, house):
-        house.food += 20
-        house.money -= 10
-        house.all_food += 20
+    def market(self):
+        self.house.food += 20
+        self.house.money -= 10
+        self.house.all_food += 20
 
-    def one_day(self, house, day):
+    def one_day(self, day):
         print(f'\n{self.name} проживает свой {day} день!')
         print(f'{self.name}: Сытость: {self.satiety}')
-        print(f'Eда в доме: {house.food}\nДеньги в доме:{house.money}')
-        print(f'\tБыло заработано: {house.all_money}'
-              f'\n\tБыло куплено еды за все время:{house.all_food}'
-              f'\n\tСыграно в игры за все время: {house.count_play_games}')
+        print(f'Eда в доме: {self.house.food}\nДеньги в доме:{self.house.money}')
+        print(f'\tБыло заработано: {self.house.all_money}'
+              f'\n\tБыло куплено еды за все время:{self.house.all_food}'
+              f'\n\tСыграно в игры за все время: {self.house.count_play_games}')
 
         roll = random.randint(1, 6)
 
@@ -40,17 +40,17 @@ class Human:
             raise ValueError(f'{self.name} Умер!!!')
 
         if self.satiety < 20:
-            self.eat(house)
-        elif house.food < 10:
-            self.market(house)
-        elif house.money < 50:
-            self.work(house)
+            self.eat()
+        elif self.house.food < 10:
+            self.market()
+        elif self.house.money < 50:
+            self.work()
         elif roll == 1:
-            self.work(house)
+            self.work()
         elif roll == 2:
-            self.eat(house)
+            self.eat()
         else:
-            self.play(house)
+            self.play()
 
 
 class House:
@@ -68,5 +68,5 @@ human1 = Human('Denis', test_house)
 human2 = Human('Sasha', test_house)
 
 for day in range(1, 366):
-    human1.one_day(test_house, day)
-    human2.one_day(test_house, day)
+    human1.one_day(day)
+    human2.one_day(day)

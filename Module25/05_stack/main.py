@@ -1,82 +1,74 @@
-import copy
-
-
-class Steck:
+class Stack:
     def __init__(self):
-        self.__temp_list = list()
-        self.__value_list = list()
-        self.__temp_del_list = list()
+        self.__task_list = list()
 
-    def add_value(self, __value):
-        if __value in self.__value_list:
-            raise ValueError('уже есть в списке')
-        self.__value_list.insert(0, __value)
+    def add_in_stack(self, task):
+        self.__task_list.append(task)
 
-    def del_value(self, __value):
-        while True:
-
-            if len(self.__value_list) == 0:
-                break
-
-            if self.__value_list[0] == __value:
-
-                search_elem = self.__value_list.pop(0)
-                self.__temp_del_list.append(search_elem)
-
-            else:
-
-                temp_elem = self.__value_list.pop(0)
-                self.__temp_list.append(temp_elem)
-
-        self.__temp_list.reverse()
-        for elem in self.__temp_list:
-            self.__value_list.insert(0, elem)
-
-        return self.__temp_del_list[0]
-
-
-class TaskManager(Steck):
-    def __init__(self):
-        super().__init__()
-        self.__task_dict = dict()
+    def del_from_stack(self):
+        if len(self.__task_list) == 0:
+            return None
+        return self.__task_list.pop()
 
     def __str__(self):
-        task_dict_keys = self.__task_dict.keys()
-        task_dict_keys = sorted(task_dict_keys)
-        info_string = '\nСписок задач:'
-        for key in task_dict_keys:
-            if isinstance(self.__task_dict[key], list):
-                list_string = '; '.join(self.__task_dict[key])
-                info_string += f'\n{key}: ' + list_string
+        return str(self.__task_list)
+
+
+class TaskManager:
+    def __init__(self):
+        self.__task_dict = dict()
+
+    def __is_double(self, task):
+        for key in self.__task_dict.keys():
+            temp_list = list()
+            del_elem = ''
+            while del_elem is not None:
+                del_elem = self.__task_dict[key].del_from_stack()
+                if del_elem is not task:
+                    temp_list.append(del_elem)
+                else:
+                    temp_list.append(del_elem)
+                    return True
             else:
-                info_string += f'\n{key}: {self.__task_dict[key]}'
+                temp_list.pop()
+                temp_list.reverse()
+                for index, _ in enumerate(temp_list):
+                    self.__task_dict[key].add_in_stack(temp_list[index])
 
-        return info_string
 
-    def new_task(self, __task: str, __priority: int):
-        if __priority in self.__task_dict:
-            __old_task = self.__task_dict.pop(__priority)
-            self.__task_dict.setdefault(__priority, [__old_task, __task])
-        else:
-            self.__task_dict.update({__priority: __task})
+    def new_task(self, task, priority):
+        if self.__is_double(task):
+            print('Такая задача уже есть!')
 
-        self.add_value(__task)
+        if priority not in self.__task_dict:
+            self.__task_dict[priority] = Stack()
+        self.__task_dict[priority].add_in_stack(task)
 
-    def del_task(self, __value):
-        self.del_value(__value)
-        __temp_dict_copy = copy.deepcopy(self.__task_dict)
-
-        for key, task in __temp_dict_copy.items():
-            if isinstance(task, list):
-                for elem in task:
-                    if elem == __value:
-                        task.remove(elem)
-                        self.__task_dict[key] = task
-
+    def del_task(self, task):
+        for key in self.__task_dict.keys():
+            temp_list = list()
+            del_elem = ''
+            while del_elem is not None:
+                del_elem = self.__task_dict[key].del_from_stack()
+                if del_elem is not task:
+                    temp_list.append(del_elem)
+                else:
+                    pass
             else:
-                if task == __value:
-                    self.__task_dict.pop(key)
+                temp_list.pop()
+                temp_list.reverse()
+                for index, _ in enumerate(temp_list):
+                    self.__task_dict[key].add_in_stack(temp_list[index])
 
+
+
+
+    def __str__(self):
+        return_line = list()
+        for key in sorted(self.__task_dict.keys()):
+            return_line.append(f'{key}: {self.__task_dict[key]}\n')
+
+        return ''.join(return_line)
 
 manager = TaskManager()
 manager.new_task("сделать уборку", 4)
@@ -84,6 +76,7 @@ manager.new_task("помыть посуду", 4)
 manager.new_task("отдохнуть", 1)
 manager.new_task("поесть", 2)
 manager.new_task("сдать дз", 2)
-
+print(manager)
 manager.del_task('помыть посуду')
 print(manager)
+manager.new_task("поесть", 2)

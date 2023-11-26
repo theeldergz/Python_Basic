@@ -3,7 +3,12 @@ import os
 test_path = r'C:\Users\Dionis\PycharmProjects\Python_Basic\Module17'
 
 
-def str_count(user_path):
+def str_count(user_path: str) -> int:
+    """
+    Функция считает количество строк в файлах .py в указанной директории user_path
+    :param user_path:  Директория в которой ведется поиск
+    :return: Возвращает итерацию с количеством строк
+    """
     str_counter = 0
 
     for direct in os.listdir(user_path):

@@ -1,7 +1,12 @@
 import os
 
 
-def error_log_generator(path_to_log_file):
+def error_log_generator(path_to_log_file: str) -> None:
+    """
+    Функция принимает файл логов и создает отдельный файл с уровнем ERROR
+    :param path_to_log_file: Пусть до файла с логом
+    :return: None
+    """
     with open(path_to_log_file, 'r', encoding='utf-8') as log_file:
         for line in log_file:
             if 'ERROR' in line:

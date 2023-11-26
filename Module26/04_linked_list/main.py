@@ -1,4 +1,11 @@
+from typing import Any
+
+
 class LinkedList:
+    """
+    Класс отвечает за создание односязанного списка
+    """
+
     def __init__(self):
         self.__id = 0
         self.__global_elem_counter = 0
@@ -26,24 +33,46 @@ class LinkedList:
                 __line_out += self.get(__index) + ' '
         return f'[{__line_out}]'
 
-    def append(self, number: int):
+    def append(self, number: int) -> None:
+        """
+        Фунцкия отвечет за добавление эдемента в "список"
+        :param number: Принимает новый элемент
+        :return: None
+        """
+
         self.__str_of_num += self.__prefix_id + str(self.__id) + str(number) + self.__separate_sym
         self.__id += 1
         self.__global_elem_counter += 1
 
-    def __elem_finder(self, __index):
+    def __elem_finder(self, __index: int) -> (int, int):
+        """
+        Функция находит элемент в строке отбрасывая префикс и разделитель
+        :param __index: Принимает индекс элемента который необходимо найти
+        :return: Возвращает кортеж из начала среза и конца среза списка (в диапазоне этих срезов находится нужное значение)
+        """
         __required_string = self.__prefix_id + str(__index)  # создает пример нужного префикса строки
         __length_prefix = len(__required_string)  # измеряет длину префикс
         __left_length = self.__str_of_num.find(__required_string) + __length_prefix  # индекс старта среза
         __right_length = self.__str_of_num.index(self.__separate_sym, __left_length)  # индекс конца среза
+
         return __left_length, __right_length
 
-    def get(self, __index):
+    def get(self, __index: int) -> str:
+        """
+        Возвращает нужный элемент
+        :param __index: Принимает индекс элемента который необходимо найти
+        :return: Возвращает необходимый эелемент с типом str
+        """
         __start_get, __end_get = self.__elem_finder(__index)
 
         return self.__str_of_num[__start_get:__end_get]
 
-    def remove(self, __index):
+    def remove(self, __index: int) -> None:
+        """
+        Удаляет элемент с индексом __index из списка
+        :param __index: Принимает индекс элемента который необходимо удалить
+        :return: None
+        """
         __prefix_len = len(self.__prefix_id + str(__index))
         __start_get, __end_get = self.__elem_finder(__index)
         __start_get -= __prefix_len

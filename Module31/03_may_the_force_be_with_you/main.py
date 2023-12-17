@@ -2,18 +2,33 @@ import requests
 import json
 import pprint
 
-my_req = requests.get('https://swapi.dev/api/starships/10/')
-data = json.loads(my_req.text)
-pilots_list = data['pilots']
-new_pilots_list = list()
+if __name__ == '__main__':
+    ship = dict()
+    temp_list = list()
 
-for pilot in pilots_list:
-    pilot_data = json.loads(requests.get(pilot).text)
-    new_pilots_list.append(pilot_data)
+    ship_info = json.loads(requests.get('https://swapi.dev/api/starships/10/').text)
+    ship['name'] = ship_info['name']
+    ship['max_atmosphering_speed'] = ship_info['max_atmosphering_speed']
+    ship['starship_class'] = ship_info['starship_class']
+    ship['pilots'] = ship_info['pilots']
 
-data['pilots'] = new_pilots_list
+    for pilot_url in ship['pilots']:
+        temp_dict = dict()
+        pilot_info = json.loads(requests.get(pilot_url).text)
+        temp_dict['name'] = pilot_info['name']
+        temp_dict['height'] = pilot_info['height']
+        temp_dict['mass'] = pilot_info['mass']
+        temp_dict['homeworld_name'] = json.loads(requests.get(pilot_info['homeworld']).text)['name']
+        temp_dict['homeworld'] = pilot_info['homeworld']
+        temp_list.append(temp_dict)
 
-with open('starship_req.json', 'w', encoding='utf-8') as json_file:
-    json.dump(data, json_file, indent=4)
 
-pprint.pprint(data, indent=4)
+    ship['pilots'] = [temp_list][0]
+
+    with open('starship_req.json', 'w', encoding='utf-8') as json_file:
+        json.dump(ship, json_file, indent=4)
+
+    pprint.pprint(ship, indent=4, sort_dicts=False)
+
+
+

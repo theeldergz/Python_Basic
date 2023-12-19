@@ -1,43 +1,36 @@
 import json
 import pprint
-from typing import Any
-
-diff_list = ["services", "staff", "datetime"]
-temp_dict = list()
 
 
-def key_search(data: dict, req_key: str) -> list[str | Any] | Any:
-    """ Рекурсивная функция. Ищет значение по ключу req_key и сохраняет его в temp_value, и возвращает """
-    temp_value = {req_key: ''}
-    if isinstance(data, dict):
-        for key, value in data.items():
-            if key == req_key:
-                return value
-            else:
-                temp_1 = (key_search(value, req_key))
-                if temp_1:
-                    temp_value[req_key] = temp_1
-    elif isinstance(data, list):
-        for elem in data:
-            temp_2 = (key_search(elem, req_key))
-            if temp_2:
-                temp_value[req_key] = temp_2
-    return temp_value
+def generate_all_items(structure):
+    if isinstance(structure, dict):
+        for key, elem in structure.items():
+            yield key, elem
+            yield from generate_all_items(elem)
 
 
-with open('result.json', 'w+', encoding='utf-8') as result, open('json_old.json') as old, open('json_new.json') as new:
-    old_data = json.loads(old.read())
-    new_data = json.loads(new.read())
-    print('\nСтарый файл:')
-    pprint.pprint(old_data, indent=4)
-    print('\nНовый файл:')
-    pprint.pprint(new_data, indent=4)
-    for diff in diff_list:
-        old_value = json.dumps(key_search(old_data, diff))
-        new_value = json.dumps(key_search(new_data, diff))
-        if old_value != new_value:
-            json.dump(key_search(new_data, diff), result, indent=4)
-            print('\nСтарое значение: ')
-            pprint.pprint(old_value, indent=4)
-            print('\nНовое значение: ')
-            pprint.pprint(new_value, indent=4)
+def search_diff(old_data, new_data, target_tags):
+    def check_pair(first_pair, second_pair):
+        return first_pair[0] in target_tags and first_pair != second_pair
+
+    return {second_pair[0]: second_pair[1]
+            for first_pair, second_pair in zip(generate_all_items(old_data), generate_all_items(new_data))
+            if check_pair(first_pair, second_pair)}
+
+
+def main():
+    with open('result.json', 'w+', encoding='utf-8') as result, open('json_old.json') as old, \
+            open('json_new.json') as new:
+
+        diff_list = ["services", "staff", "datetime"]
+        old_data = json.loads(old.read())
+        new_data = json.loads(new.read())
+
+        diff_elem = search_diff(old_data, new_data, diff_list)
+
+        pprint.pprint(diff_elem, indent=4)
+        json.dump(diff_elem, result, indent=4)
+
+
+if __name__ == '__main__':
+    main()

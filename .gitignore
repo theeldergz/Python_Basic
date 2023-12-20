@@ -611,3 +611,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+/Module22/06_war_and_peace/analysis.txt
+/Module22/06_war_and_peace/voyna-i-mir.txt
+/Module23/02_lucky_number/out_file.txt

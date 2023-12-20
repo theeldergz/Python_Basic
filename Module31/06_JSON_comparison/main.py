@@ -8,6 +8,9 @@ def generate_all_items(structure: dict) -> Generator:
         for key, elem in structure.items():
             yield key, elem
             yield from generate_all_items(elem)
+    elif isinstance(structure, list):
+        for elem in structure:
+            yield from generate_all_items(elem)
 
 
 def search_diff(old_data: json, new_data: json, target_tags: list) -> dict:
@@ -22,6 +25,7 @@ def search_diff(old_data: json, new_data: json, target_tags: list) -> dict:
 def main():
     with open('result.json', 'w+', encoding='utf-8') as result, open('json_old.json') as old, \
             open('json_new.json') as new:
+
         diff_list = ["services", "staff", "datetime"]
         old_data = json.loads(old.read())
         new_data = json.loads(new.read())

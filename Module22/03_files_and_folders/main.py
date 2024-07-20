@@ -1,20 +1,14 @@
 import os
 
 
-user_input = input("Введите путь: ")
-user_path = os.path.join(user_input)
-
-
-
-def dir_info(user_path):
-
+def dir_info(_path):
     count_files = 0
     size_files = 0
     count_directories = 0
 
-    for file in os.listdir(user_path):
+    for file in os.listdir(_path):
 
-        path_to_file = os.path.join(user_path, file)
+        path_to_file = os.path.join(_path, file)
 
         if os.path.isdir(path_to_file):
             count_directories += 1
@@ -31,10 +25,11 @@ def dir_info(user_path):
     return size_files, count_files, count_directories
 
 
-size, file_count, dir_count = dir_info(user_path)
+if __name__ == "__main__":
+    size, file_count, dir_count = dir_info(r'C:\Users\Dionis\AppData\Local')
 
-print(
-    'Размер каталога (в Кб): ', round((size / 1024), 2), 'КБ',
-    '\nКоличество подкаталогов: ', dir_count,
-    '\nКоличество файлов: ', file_count
-)
+    print(
+        'Размер каталога (в Кб): ', round((size / 1024), 2), 'КБ',
+        '\nКоличество подкаталогов: ', dir_count,
+        '\nКоличество файлов: ', file_count
+    )
